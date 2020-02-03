@@ -19,7 +19,7 @@ namespace Examples.Pipeline.ServiceBusFunctions
             log.LogInformation($"Function1: executed at: {DateTime.Now}");
 
             const int dataSizeBytes = 500;
-            const int sessionCount = 10;
+            const int sessionCount = 1;
             const int messagesPerSession = 4;
             var now = DateTime.UtcNow;
 

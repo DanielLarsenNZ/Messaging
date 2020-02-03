@@ -1,8 +1,9 @@
 {
     "version": "2.0",
     "functions": [
-        "Function4",
-        "Function5"
+      "Function4",
+      "Function5",
+      "Function6"
       ]
     
 }
