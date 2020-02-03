@@ -11,7 +11,7 @@ namespace Examples.Pipeline.ServiceBusFunctions
         [FunctionName("Function3")]
         public static async Task Run(
             [ServiceBusTrigger("queue2", Connection = "ServiceBusConnectionString")]Message message,
-            [ServiceBus("queue3", Connection = "ServiceBusConnectionString")]IAsyncCollector<Message> messages,
+            //[ServiceBus("queue3", Connection = "ServiceBusConnectionString")]IAsyncCollector<Message> messages,
             ILogger log)
         {
             string messageBody = Encoding.UTF8.GetString(message.Body);
@@ -19,9 +19,11 @@ namespace Examples.Pipeline.ServiceBusFunctions
             // Replace these two lines with your processing logic.
             log.LogInformation($"Function3: message = {messageBody}");
 
+            // Black hole
+
             // send processed message to next hub
-            var newMessage = new Message(Encoding.UTF8.GetBytes(messageBody));
-            await messages.AddAsync(newMessage);
+            //var newMessage = new Message(Encoding.UTF8.GetBytes(messageBody));
+            //await messages.AddAsync(newMessage);
         }
     }
 }

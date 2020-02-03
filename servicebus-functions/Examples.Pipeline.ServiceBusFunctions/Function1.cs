@@ -12,15 +12,14 @@ namespace Examples.Pipeline.ServiceBusFunctions
     {
         [FunctionName("Function1")]
         public static async Task Run(
-            [TimerTrigger("*/10 * * * * *")]TimerInfo myTimer,
+            [TimerTrigger("0 */1 * * * *")]TimerInfo myTimer,
             [ServiceBus("queue1", Connection = "ServiceBusConnectionString")]IAsyncCollector<Message> messages,
             ILogger log)
         {
             log.LogInformation($"Function1: executed at: {DateTime.Now}");
 
-            // messages per minute
-            const int mpm = 10000;
-            const int dataSizeBytes = 1000;
+            const int mpm = 10;  // messages per minute
+            const int dataSizeBytes = 500;
             var now = DateTime.UtcNow;
 
             string data = "";
@@ -31,7 +30,7 @@ namespace Examples.Pipeline.ServiceBusFunctions
             }
 
             int count = 0;
-            for (int i = 1; i <= mpm / 6; i++)
+            for (int i = 1; i <= mpm; i++)
             {
                 var item = new Item
                 {
