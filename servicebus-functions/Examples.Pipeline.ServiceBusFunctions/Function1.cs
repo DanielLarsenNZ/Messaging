@@ -18,7 +18,7 @@ namespace Examples.Pipeline.ServiceBusFunctions
         {
             log.LogInformation($"Function1: executed at: {DateTime.Now}");
 
-            const int mpm = 1;  // messages per minute
+            const int mpm = 10;  // messages per minute
             const int dataSizeBytes = 500;
             var now = DateTime.UtcNow;
 

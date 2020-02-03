@@ -12,7 +12,7 @@ namespace Examples.Pipeline.ServiceBusFunctions
     {
         [FunctionName("Function4")]
         public static async Task Run(
-            [TimerTrigger("0 */1 * * * *")]TimerInfo myTimer,
+            [TimerTrigger("30 */1 * * * *")]TimerInfo myTimer,
             [ServiceBus("queue3-session", Connection = "ServiceBusConnectionString")]IAsyncCollector<Message> messages,
             ILogger log)
         {
