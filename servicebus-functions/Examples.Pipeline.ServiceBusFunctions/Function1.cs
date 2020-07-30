@@ -13,7 +13,7 @@ namespace Examples.Pipeline.ServiceBusFunctions
         [FunctionName("Function1")]
         public static async Task Run(
             [TimerTrigger("0 */1 * * * *")]TimerInfo myTimer,
-            [ServiceBus("queue1", Connection = "ServiceBusConnectionString")]IAsyncCollector<Message> messages,
+            [ServiceBus("queue101", Connection = "ServiceBusConnectionString")]IAsyncCollector<Message> messages,
             ILogger log)
         {
             log.LogInformation($"Function1: executed at: {DateTime.Now}");

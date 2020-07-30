@@ -10,7 +10,7 @@ namespace Examples.Pipeline.ServiceBusFunctions
     {
         [FunctionName("Function3")]
         public static async Task Run(
-            [ServiceBusTrigger("queue2", Connection = "ServiceBusConnectionString")]Message message,
+            [ServiceBusTrigger("queue102", Connection = "ServiceBusConnectionString")]Message message,
             //[ServiceBus("queue3", Connection = "ServiceBusConnectionString")]IAsyncCollector<Message> messages,
             ILogger log)
         {

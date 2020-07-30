@@ -1,34 +1,43 @@
-# This script deploys an App Service Plan, Storage Accounts, Application Insights, an Event Hubs Namespace
-# and Hub and a Service Bus namespace and queues.
-# It also deploys a WebJob App and a Function App.
+$location = 'australiaeast'
+$loc = 'aue'
+$rg = 'hellomessaging-rg'
+$tags = 'project=hello-messaging'
+$servicebusNamespace = 'pipeline-bus'
+$servicebusAuthRule = 'SenderReceiver1'
+$servicebusSku = 'Standard'
+$sessionQueues = 'queue3-session', 'queue4-session'
+$webjobsStorage = "hellomessaging$loc"
 
-# Load Vars
-. ./_vars.ps1
-
-
-$instrumentationKey = ( az monitor app-insights component show --app $insights -g $rg | ConvertFrom-Json ).instrumentationKey
-
-
-# FUNCTION APP
-az functionapp create -n $functionApp --plan $plan -g $rg --tags $tags -s $webjobsStorage --app-insights $insights --app-insights-key $instrumentationKey
-
-# Configure always on
-az functionapp config set -n $functionApp -g $rg --always-on true
+# Create Resource Group
+Write-Host "az group create -n $rg" -ForegroundColor Yellow
+az group create -n $rg --location $location --tags $tags
 
 
 # SERVICE BUS
 # https://docs.microsoft.com/en-us/cli/azure/servicebus/namespace?view=azure-cli-latest#az-servicebus-namespace-create
-foreach ($queue in $queues) {
-    az servicebus queue create -g $rg --namespace-name $servicebusNamespace --name $queue --default-message-time-to-live 'P14D'
+
+# Create namespace, queue and auth rule
+Write-Host "az servicebus namespace create --name $servicebusNamespace" -ForegroundColor Yellow
+az servicebus namespace create -g $rg --name $servicebusNamespace --location $location --tags $tags --sku $servicebusSku
+
+Write-Host "az servicebus namespace authorization-rule create --name $servicebusAuthRule" -ForegroundColor Yellow
+az servicebus namespace authorization-rule create -g $rg --namespace-name $servicebusNamespace --name $servicebusAuthRule --rights Listen Send
+
+foreach ($queue in $sessionQueues) {
+    Write-Host "az servicebus queue create --name $queue" -ForegroundColor Yellow
+    az servicebus queue create -g $rg --namespace-name $servicebusNamespace --name $queue --enable-session true     #--default-message-time-to-live 'P14D'
 }
 
-# Get connection strings
+# Get connection string
+Write-Host "az servicebus namespace authorization-rule keys list --name $servicebusAuthRule" -ForegroundColor Yellow
 $servicebusConnectionString = ( az servicebus namespace authorization-rule keys list -g $rg --namespace-name $servicebusNamespace --name $servicebusAuthRule | ConvertFrom-Json ).primaryConnectionString
+$servicebusConnectionString
+
+Write-Host "az storage account create -n $webjobsStorage" -ForegroundColor Yellow
+az storage account create -n $webjobsStorage -g $rg -l $location --tags $tags --sku Standard_LRS
+
+Write-Host "az storage account show-connection-string -n $webjobsStorage" -ForegroundColor Yellow
 $webjobsStorageConnection = ( az storage account show-connection-string -g $rg -n $webjobsStorage | ConvertFrom-Json ).connectionString
-
-# APP SETTINGS
-az functionapp config appsettings set -n $functionApp -g $rg --settings "APPINSIGHTS_INSTRUMENTATIONKEY=$instrumentationKey" "AzureWebJobsStorage=$webjobsStorageConnection" "ServiceBusConnectionString=$servicebusConnectionString"
-
-
+$webjobsStorageConnection
 # Tear down
 # az group delete -n $rg --yes
