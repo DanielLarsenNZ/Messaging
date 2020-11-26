@@ -18,7 +18,7 @@ namespace Examples.Pipeline.ServiceBusFunctions
         {
             log.LogInformation($"Function1: executed at: {DateTime.Now}");
 
-            const int mpm = 10;  // messages per minute
+            const int mpm = 60;  // messages per minute
             const int dataSizeBytes = 500;
             var now = DateTime.UtcNow;
 
@@ -29,6 +29,7 @@ namespace Examples.Pipeline.ServiceBusFunctions
                 data += (char)random.Next(65, 90);
             }
 
+            var delaySeconds = 60 / mpm;
             int count = 0;
             for (int i = 1; i <= mpm; i++)
             {
@@ -46,7 +47,10 @@ namespace Examples.Pipeline.ServiceBusFunctions
 
                 // then send the message
                 await messages.AddAsync(message);
+                log.LogInformation($"Function1: Sent message {count}.");
                 count++;
+
+                if (DateTime.UtcNow < now.AddSeconds(60)) await Task.Delay(TimeSpan.FromSeconds(delaySeconds));
             }
 
             log.LogInformation($"Function1: Sending batch of {count} messages.");

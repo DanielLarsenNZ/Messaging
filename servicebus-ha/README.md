@@ -1,5 +1,17 @@
 # High Availability with Azure Service Bus
 
+## Getting started
+
+    ./deploy.ps1 -Mode Deploy
+    func start ../servicebus-functions/Examples.Pipeline.ServiceBusFunctions
+    ./deploy.ps1 -Mode Status
+    ./deploy.ps1 -Mode Failover
+    ./deploy.ps1 -Mode Status
+    ./deploy.ps1 -Mode Failback
+    ./deploy.ps1 -Mode Status
+
+You can failover and failback as many times as you like. Note that the DNS TTL on the alias appears to be about 60 seconds, so wait at least that long between Failover / Failback to avoid an interruption to clients.
+
 ## Outage vs Disaster
 
 <https://docs.microsoft.com/en-us/azure/service-bus-messaging/service-bus-geo-dr#outages-and-disasters><br/>
