@@ -2,13 +2,26 @@
 
 ## Getting started
 
+Deploy the Service Bus namespaces and alias
+
     ./deploy.ps1 -Mode Deploy
-    func start ../servicebus-functions/Examples.Pipeline.ServiceBusFunctions
-    ./deploy.ps1 -Mode Status
+
+Make a `local.settings.json` file
+
+    cd servicebus-functions/Examples.Pipeline.ServiceBusFunctions
+    copy local.settings.template.json local.settings.json
+
+Copy the Service Bus Alias Connection String into `local.settings.json` and start the function.
+
+    func start
+
+Perform failover / failback
+
+    cd servicebus-ha
     ./deploy.ps1 -Mode Failover
-    ./deploy.ps1 -Mode Status
+    ./deploy.ps1 -Mode Status 	# Wait for pairing status = Succeeded
     ./deploy.ps1 -Mode Failback
-    ./deploy.ps1 -Mode Status
+    ./deploy.ps1 -Mode Status	# Wait for pairing status = Succeeded
 
 You can failover and failback as many times as you like. Note that the DNS TTL on the alias appears to be about 60 seconds, so wait at least that long between Failover / Failback to avoid an interruption to clients.
 
@@ -54,3 +67,5 @@ Best practices for insulating applications against Service Bus outages and disas
 Azure Service Bus Geo-disaster recovery: <https://docs.microsoft.com/en-us/azure/service-bus-messaging/service-bus-geo-dr>
 
 <https://twitter.com/clemensv/status/1182280928867098626>
+
+<https://rajbos.github.io/blog/2019/07/12/Azure-CLI-PowerShell>
