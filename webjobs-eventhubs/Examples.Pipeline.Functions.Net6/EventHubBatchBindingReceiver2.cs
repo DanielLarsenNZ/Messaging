@@ -47,7 +47,8 @@ namespace Examples.Pipeline.Functions
                         {
                             { "partitionId", partitionContext.PartitionId },
                             { "WEBSITE_INSTANCE_ID", Environment.GetEnvironmentVariable("WEBSITE_INSTANCE_ID") },
-                            { "COMPUTERNAME", Environment.GetEnvironmentVariable("COMPUTERNAME") }
+                            { "COMPUTERNAME", Environment.GetEnvironmentVariable("COMPUTERNAME") },
+                            { "Activity.RootId", System.Diagnostics.Activity.Current?.RootId }
                         });
 
                     await Task.Yield();
