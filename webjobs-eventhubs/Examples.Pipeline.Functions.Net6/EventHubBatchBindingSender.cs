@@ -1,9 +1,15 @@
 using Azure.Messaging.EventHubs;
+using Azure.Messaging.EventHubs.Consumer;
+using Microsoft.ApplicationInsights;
+using Microsoft.ApplicationInsights.Extensibility;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Azure.WebJobs;
+using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -12,19 +18,29 @@ namespace Examples.Pipeline.Functions
     public class EventHubBatchBindingSender
     {
         private readonly IConfiguration _config;
-        public EventHubBatchBindingSender(IConfiguration config)
+        private readonly ILogger _log;
+        //readonly TelemetryClient _insights;
+
+        public EventHubBatchBindingSender(
+            //TelemetryConfiguration telemetryConfiguration,
+            IConfiguration config, 
+            ILogger<EventHubBatchBindingSender> log)
         {
+            //_insights = new TelemetryClient(telemetryConfiguration);
             _config = config;
+            _log = log;
         }
 
         // Timer trigger every 1 minute
+        //[Disable]
         [FunctionName("EventHubBatchBindingSender")]
         public async Task Run(
             [TimerTrigger("0 */1 * * * *")]TimerInfo timer,
-            ILogger log,
+            //[HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)] HttpRequest req,
+            //ILogger log,
             [EventHub("numbers1", Connection = "EventHubConnectionString")]IAsyncCollector<EventData> outputEvents)
         {
-            log.LogInformation($"EventHubBatchBindingSender function executed at: {DateTime.Now}");
+            _log.LogInformation($"EventHubBatchBindingSender function executed at: {DateTime.Now}");
 
             int count = 0;
             if (!int.TryParse(_config["NumberOfEventsToSend"], out int numberOfEventsToSend)) numberOfEventsToSend = 100;
@@ -41,7 +57,17 @@ namespace Examples.Pipeline.Functions
                 count++;
             }
 
-            log.LogInformation($"Sending batch of {count} events.");
+            //_insights.TrackEvent(
+            //    "EventHubBatchBindingSender/EventBatchSend",
+            //            properties: new Dictionary<string, string>
+            //            {
+            //                            { "EventsInBatch", count.ToString() },
+            //                            { "WEBSITE_INSTANCE_ID", Environment.GetEnvironmentVariable("WEBSITE_INSTANCE_ID") },
+            //                            { "COMPUTERNAME", Environment.GetEnvironmentVariable("COMPUTERNAME") },
+            //                            { "Activity.RootId", System.Diagnostics.Activity.Current?.RootId }
+            //    });
+
+            _log.LogInformation($"Sending batch of {count} events.");
         }
     }
 }

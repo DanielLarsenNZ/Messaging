@@ -15,20 +15,23 @@ namespace Examples.Pipeline.Functions
     public class EventHubBatchBindingReceiver
     {
         readonly TelemetryClient _insights;
+        private readonly ILogger _log;
 
-        public EventHubBatchBindingReceiver(TelemetryConfiguration telemetryConfiguration)
+        public EventHubBatchBindingReceiver(TelemetryConfiguration telemetryConfiguration, ILogger<EventHubBatchBindingReceiver> log)
         {
             _insights = new TelemetryClient(telemetryConfiguration);
+            _log = log;
         }
 
+        //[Disable]
         [FunctionName("EventHubBatchBindingReceiver")]
         public async Task Run(
             [EventHubTrigger("numbers1", Connection = "EventHubConnectionString")] EventData[] events,
-            ILogger log,
+            //ILogger log,
             PartitionContext partitionContext,
             [EventHub("numbers2", Connection = "EventHubConnectionString")]IAsyncCollector<EventData> outputEvents)
         {
-            log.LogInformation($"EventHubBatchBindingReceiver: Batch count = {events.Length}, Partition = {partitionContext.PartitionId}");
+            _log.LogInformation($"EventHubBatchBindingReceiver: Batch count = {events.Length}, Partition = {partitionContext.PartitionId}");
 
             var exceptions = new List<Exception>();
 
@@ -39,7 +42,7 @@ namespace Examples.Pipeline.Functions
                     string messageBody = Encoding.UTF8.GetString(eventData.Body.ToArray());
 
                     // Replace these two lines with your processing logic.
-                    log.LogInformation($"EventHubBatchBindingReceiver: message = {messageBody}");
+                    _log.LogInformation($"EventHubBatchBindingReceiver: message = {messageBody}");
 
                     _insights.TrackEvent(
                         "EventHubBatchBindingReceiver/EventProcessed",

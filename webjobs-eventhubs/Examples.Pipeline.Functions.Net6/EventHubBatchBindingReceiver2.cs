@@ -15,19 +15,22 @@ namespace Examples.Pipeline.Functions
     public class EventHubBatchBindingReceiver2
     {
         readonly TelemetryClient _insights;
+        private readonly ILogger _log;
 
-        public EventHubBatchBindingReceiver2(TelemetryConfiguration telemetryConfiguration)
+        public EventHubBatchBindingReceiver2(TelemetryConfiguration telemetryConfiguration, ILogger<EventHubBatchBindingReceiver2> log)
         {
             _insights = new TelemetryClient(telemetryConfiguration);
+            _log = log;
         }
 
+        //[Disable]
         [FunctionName("EventHubBatchBindingReceiver2")]
         public async Task Run(
             [EventHubTrigger("numbers2", Connection = "EventHubConnectionString")] EventData[] events,
-            ILogger log,
+            //ILogger log,
             PartitionContext partitionContext)
         {
-            log.LogInformation($"EventHubBatchBindingReceiver2: Batch count = {events.Length}, Partition = {partitionContext.PartitionId}");
+            _log.LogInformation($"EventHubBatchBindingReceiver2: Batch count = {events.Length}, Partition = {partitionContext.PartitionId}");
 
             var exceptions = new List<Exception>();
 
@@ -38,7 +41,7 @@ namespace Examples.Pipeline.Functions
                     string messageBody = Encoding.UTF8.GetString(eventData.Body.ToArray());
 
                     // Replace these two lines with your processing logic.
-                    log.LogInformation($"EventHubBatchBindingReceiver2: message = {messageBody}");
+                    _log.LogInformation($"EventHubBatchBindingReceiver2: message = {messageBody}");
 
                     // Track additional information as a custom event
                     _insights.TrackEvent(
