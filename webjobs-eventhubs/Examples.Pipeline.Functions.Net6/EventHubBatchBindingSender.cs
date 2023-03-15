@@ -33,14 +33,14 @@ namespace Examples.Pipeline.Functions
 
         // Timer trigger every 1 minute
         //[Disable]
-        [FunctionName("EventHubBatchBindingSender")]
+        [FunctionName("EventHubBatchBindingSenderHttp")]
         public async Task Run(
-            [TimerTrigger("0 */1 * * * *")]TimerInfo timer,
-            //[HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)] HttpRequest req,
+            //[TimerTrigger("0 */1 * * * *")]TimerInfo timer,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)] HttpRequest req,
             //ILogger log,
             [EventHub("numbers1", Connection = "EventHubConnectionString")]IAsyncCollector<EventData> outputEvents)
         {
-            _log.LogInformation($"EventHubBatchBindingSender function executed at: {DateTime.Now}");
+            _log.LogInformation($"EventHubBatchBindingSenderHttp function executed at: {DateTime.Now}");
 
             int count = 0;
             if (!int.TryParse(_config["NumberOfEventsToSend"], out int numberOfEventsToSend)) numberOfEventsToSend = 100;

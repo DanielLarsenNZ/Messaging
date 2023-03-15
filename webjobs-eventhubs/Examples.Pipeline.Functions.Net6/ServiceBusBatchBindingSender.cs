@@ -34,67 +34,11 @@ namespace Examples.Pipeline.Functions
         }
 
         // Timer trigger every 1 minute
-        [FunctionName($"{nameof(ServiceBusBatchBindingSender)}00")]
+        [FunctionName($"{nameof(ServiceBusBatchBindingSender)}Http")]
         public async Task Run1(
-            [TimerTrigger("0 */1 * * * *")]TimerInfo timer,
-            //[HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)] HttpRequest req,
-            //ILogger log,
+            //[TimerTrigger("0 */1 * * * *")]TimerInfo timer,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)] HttpRequest req,
             [ServiceBus("numbers1", Connection = "ServiceBusConnectionString")]IAsyncCollector<ServiceBusMessage> outputMessages)
-        {
-            await RunServiceBusBatchBindingSender(outputMessages);
-        }
-
-        // Timer trigger every 1 minute
-        [FunctionName($"{nameof(ServiceBusBatchBindingSender)}10")]
-        public async Task Run2(
-            [TimerTrigger("10 */1 * * * *")] TimerInfo timer,
-            //[HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)] HttpRequest req,
-            //ILogger log,
-            [ServiceBus("numbers1", Connection = "ServiceBusConnectionString")] IAsyncCollector<ServiceBusMessage> outputMessages)
-        {
-            await RunServiceBusBatchBindingSender(outputMessages);
-        }
-
-        // Timer trigger every 1 minute
-        [FunctionName($"{nameof(ServiceBusBatchBindingSender)}20")]
-        public async Task Run3(
-            [TimerTrigger("20 */1 * * * *")] TimerInfo timer,
-            //[HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)] HttpRequest req,
-            //ILogger log,
-            [ServiceBus("numbers1", Connection = "ServiceBusConnectionString")] IAsyncCollector<ServiceBusMessage> outputMessages)
-        {
-            await RunServiceBusBatchBindingSender(outputMessages);
-        }
-
-        // Timer trigger every 1 minute
-        [FunctionName($"{nameof(ServiceBusBatchBindingSender)}30")]
-        public async Task Run4(
-            [TimerTrigger("30 */1 * * * *")] TimerInfo timer,
-            //[HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)] HttpRequest req,
-            //ILogger log,
-            [ServiceBus("numbers1", Connection = "ServiceBusConnectionString")] IAsyncCollector<ServiceBusMessage> outputMessages)
-        {
-            await RunServiceBusBatchBindingSender(outputMessages);
-        }
-
-        // Timer trigger every 1 minute
-        [FunctionName($"{nameof(ServiceBusBatchBindingSender)}40")]
-        public async Task Run5(
-            [TimerTrigger("40 */1 * * * *")] TimerInfo timer,
-            //[HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)] HttpRequest req,
-            //ILogger log,
-            [ServiceBus("numbers1", Connection = "ServiceBusConnectionString")] IAsyncCollector<ServiceBusMessage> outputMessages)
-        {
-            await RunServiceBusBatchBindingSender(outputMessages);
-        }
-
-        // Timer trigger every 1 minute
-        [FunctionName($"{nameof(ServiceBusBatchBindingSender)}50")]
-        public async Task Run6(
-            [TimerTrigger("50 */1 * * * *")] TimerInfo timer,
-            //[HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)] HttpRequest req,
-            //ILogger log,
-            [ServiceBus("numbers1", Connection = "ServiceBusConnectionString")] IAsyncCollector<ServiceBusMessage> outputMessages)
         {
             await RunServiceBusBatchBindingSender(outputMessages);
         }

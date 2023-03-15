@@ -31,6 +31,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{CAE6525C
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Examples.Pipeline.Functions.Net6", "Examples.Pipeline.Functions.Net6\Examples.Pipeline.Functions.Net6.csproj", "{DBCD0EBE-F55F-482B-B013-A79F69413820}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Examples.Pipeline.FunctionsRunner", "Examples.Pipeline.FunctionsRunner\Examples.Pipeline.FunctionsRunner.csproj", "{95D86697-4B1D-4957-B69B-11503EB5A03B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -73,6 +75,10 @@ Global
 		{DBCD0EBE-F55F-482B-B013-A79F69413820}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DBCD0EBE-F55F-482B-B013-A79F69413820}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DBCD0EBE-F55F-482B-B013-A79F69413820}.Release|Any CPU.Build.0 = Release|Any CPU
+		{95D86697-4B1D-4957-B69B-11503EB5A03B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{95D86697-4B1D-4957-B69B-11503EB5A03B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{95D86697-4B1D-4957-B69B-11503EB5A03B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{95D86697-4B1D-4957-B69B-11503EB5A03B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -87,6 +93,7 @@ Global
 		{30F76C15-13DD-4288-89FC-7C3072BDF5F5} = {AD5CF05C-7AB5-405E-A45B-BE6451952D31}
 		{24B96798-4414-42B2-A5B8-10CEFBF25CF8} = {AD5CF05C-7AB5-405E-A45B-BE6451952D31}
 		{DBCD0EBE-F55F-482B-B013-A79F69413820} = {9B44E6F0-C85C-4C37-A4EB-F5CD529A154A}
+		{95D86697-4B1D-4957-B69B-11503EB5A03B} = {AD5CF05C-7AB5-405E-A45B-BE6451952D31}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {EF16BDF1-E293-4BC2-B9F5-31F6380B6F29}
